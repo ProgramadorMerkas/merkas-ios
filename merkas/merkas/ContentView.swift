@@ -112,7 +112,3 @@ struct ContentView: View {
         isLoading = false
     }
 }
-
-#Preview {
-    ContentView()
-}
