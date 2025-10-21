@@ -13,10 +13,11 @@ struct IntroScreen: View {
     var body: some View {
         VStack {
             Spacer()
-            Image("PuntosMerkas")
+            Image("MerkasLogoTransparent")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 250, height: 250)
+                .padding(.bottom, 10)
             
             Text(.introMerkas)
                 .multilineTextAlignment(.center)

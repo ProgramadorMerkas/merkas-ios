@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24128" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -9,33 +9,33 @@
     </dependencies>
     <scenes>
         <!--View Controller-->
-        <scene sceneID="EHf-IW-A2E">
+        <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="PuntosMerkas" translatesAutoresizingMaskIntoConstraints="NO" id="hYG-Lc-MvF">
-                                <rect key="frame" x="67" y="269" width="240" height="128"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="MerkasLogoTransparent" highlightedImage="MerkasLogoTransparent" translatesAutoresizingMaskIntoConstraints="NO" id="kWH-RA-VBd">
+                                <rect key="frame" x="76" y="362" width="240" height="128"/>
                             </imageView>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="hYG-Lc-MvF" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="height" multiplier="240:667" id="1AI-Kf-rXa"/>
-                            <constraint firstItem="hYG-Lc-MvF" firstAttribute="centerY" secondItem="Bcu-3y-fUS" secondAttribute="centerY" id="JXL-4l-Syk"/>
-                            <constraint firstItem="hYG-Lc-MvF" firstAttribute="centerX" secondItem="Bcu-3y-fUS" secondAttribute="centerX" id="uGr-T5-n2F"/>
+                            <constraint firstItem="kWH-RA-VBd" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="J8u-Vn-r4p"/>
+                            <constraint firstItem="kWH-RA-VBd" firstAttribute="centerY" secondItem="vDu-zF-Fre" secondAttribute="centerY" id="mej-Ie-p9C"/>
+                            <constraint firstItem="kWH-RA-VBd" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="20:71" id="s2h-mv-pPd"/>
                         </constraints>
                     </view>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52.173913043478265" y="375"/>
+            <point key="canvasLocation" x="140" y="92"/>
         </scene>
     </scenes>
     <resources>
-        <image name="PuntosMerkas" width="1024" height="1024"/>
+        <image name="MerkasLogoTransparent" width="2696" height="2900"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
