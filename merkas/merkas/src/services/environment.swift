@@ -7,4 +7,4 @@
 
 import SwiftUI
 
-let baseURL: String = "https://www.merkas.co/merkasbusiness/"
+let baseURL: String = "https://www.merkas.co/merkasbusiness"
