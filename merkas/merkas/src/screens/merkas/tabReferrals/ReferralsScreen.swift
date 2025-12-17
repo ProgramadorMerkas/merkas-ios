@@ -3,7 +3,7 @@
 //  merkas
 //
 //  Created by Andrés Palacio Molina on 29/9/25.
-//
+//  Modified by Edwin Egue 12/12/2025
 
 import SwiftUI
 
@@ -12,14 +12,14 @@ struct ReferralsScreen: View {
     @AppStorage(StorageKeys.TOKEN.rawValue) private var token: String = ""
     @State private var navigateToAddFriends = false
     @State var selectedTab: ReferralsTabsEnum = .all
-    @State var loadingData: Bool = true
+    @State var loadingData: Bool = false
     @State var allReferrals: [ReferredUser] = []
     @State var directReferrals: [ReferredUser] = []
     @State var indirectReferrals: [ReferredUser] = []
     @State var messageError: String = ""
     
     var body: some View {
-        NavigationStack {
+        NavigationStack {		
             VStack {
                 if loadingData {
                     Loading(message: "referralsLoading")
@@ -78,7 +78,7 @@ struct ReferralsScreen: View {
                     .padding(.bottom, 10)
                     
                     TabView(selection: $selectedTab) {
-                        Referrals(referrals: allReferrals)
+                        Referrals(referrals: allReferrals , type: "Todos")
                             .tag(ReferralsTabsEnum.all)
                             .refreshable {
                                 Task {
@@ -86,10 +86,10 @@ struct ReferralsScreen: View {
                                 }
                             }
                         
-                        Referrals(referrals: directReferrals)
+                        Referrals(referrals: directReferrals , type: "Directos")
                             .tag(ReferralsTabsEnum.direct)
                         
-                        Referrals(referrals: indirectReferrals)
+                        Referrals(referrals: indirectReferrals ,  type: "Indirectos")
                             .tag(ReferralsTabsEnum.indirect)
                     }
                     .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
@@ -130,9 +130,10 @@ struct ReferralsScreen: View {
                 let result = await ReferralsService.shared.fetchReferrals(userId: appState.user?.usuarioId ?? "", token: token)
                 switch result {
                 case .success(let referrals):
-                    print("✅ Llamada exitosa, revisa la consola para ver el JSON", referrals)
+                    //print("✅ Llamada exitosa, revisa la consola para ver el JSON", referrals)
                     allReferrals = referrals
-                    
+                    directReferrals = referrals.filter { $0.concepto == "INDIRECTO"}
+                    indirectReferrals = referrals.filter{ $0.concepto == "INDIRECTO"}
                     loadingData = false
                 case .failure(let mensaje):
                     print("❌ Error:", mensaje)
