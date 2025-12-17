@@ -17,7 +17,7 @@ struct AddFriends: View {
         VStack{
             HStack(spacing: 12){
                 Image(systemName:  "link.circle.fill").foregroundStyle(.merkas).font(.title)
-                Text("Comparte tu còdigo de referido").font(.title).foregroundStyle(.merkas).bold(true).padding(10)
+                Text("Comparte tu código de referido").font(.title).foregroundStyle(.merkas).bold(true).padding(10)
                 
             }
             HStack{
@@ -60,7 +60,7 @@ struct AddFriends: View {
         let whatsappUrl = "Whapsapp://send?text=\(encodedMessage)"
         print(whatsappUrl)
         guard let url = URL(string: whatsappUrl) else {
-            alertMessasge = "Error al crear el enlace de Whatsapp"
+            alertMessasge = "Error al crear el enlace de WhatsApp"
             showAlert = true
             return
         }
@@ -69,13 +69,13 @@ struct AddFriends: View {
             UIApplication.shared.open(url, options: [:]){succes in
                 if !succes {
                     
-                    alertMessasge = "No se pudo abrir Whatsapp"
+                    alertMessasge = "No se pudo abrir WhatsApp"
                     showAlert = true
                 }
                 
             }
         }else{
-            alertMessasge = "WhatsApp no està instalao en este dispositivo"
+            alertMessasge = "WhatsApp no está instalado en este dispositivo"
             showAlert = true
         }
     }
