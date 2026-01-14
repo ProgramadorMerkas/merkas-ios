@@ -17,6 +17,19 @@
     "%@" : {
 
     },
+    "%@ , %@" : {
+      "localizations" : {
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ , %2$@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+
+    },
     "+%@" : {
 
     },
@@ -33,6 +46,9 @@
     "$%@" : {
 
     },
+    "Actualizando Perfil" : {
+
+    },
     "alliesEmpty" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -44,6 +60,15 @@
         }
       }
     },
+    "Atenciòn" : {
+
+    },
+    "Cambiar foto" : {
+
+    },
+    "Cerrar" : {
+
+    },
     "codeSelectCountry" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -54,6 +79,15 @@
           }
         }
       }
+    },
+    "Comparte tu código de referido" : {
+
+    },
+    "Compartir por WhatsApp" : {
+
+    },
+    "Contactar Soporte" : {
+
     },
     "createAPassword" : {
       "extractionState" : "manual",
@@ -76,6 +110,9 @@
           }
         }
       }
+    },
+    "Debe comunicarse con soporte técnico para el cambio de correo electronico o número de teléfono." : {
+
     },
     "ecommerce" : {
       "extractionState" : "manual",
@@ -140,6 +177,12 @@
           }
         }
       }
+    },
+    "Editar" : {
+
+    },
+    "Editar Perfil" : {
+
     },
     "email" : {
       "extractionState" : "manual",
@@ -262,6 +305,9 @@
         }
       }
     },
+    "Guardar" : {
+
+    },
     "homeHello" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -284,6 +330,12 @@
         }
       }
     },
+    "Invita a tus amigos a unirse a Merkas y gana beneficios por cada referido." : {
+
+    },
+    "Invitar Amigos" : {
+
+    },
     "inviteFriends" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -305,6 +357,21 @@
           }
         }
       }
+    },
+    "Mi Merkash" : {
+
+    },
+    "Mi Perfil" : {
+
+    },
+    "Mis Compras" : {
+
+    },
+    "Mis puntos" : {
+
+    },
+    "Mis Puntos" : {
+
     },
     "myMerkash" : {
       "extractionState" : "manual",
@@ -349,6 +416,12 @@
           }
         }
       }
+    },
+    "OK" : {
+
+    },
+    "Para cambios en correo o celular, comuníquese con soporte técnico al icono de soporte" : {
+
     },
     "passMin8" : {
       "extractionState" : "manual",
@@ -426,6 +499,9 @@
           }
         }
       }
+    },
+    "Perfil Actualizado" : {
+
     },
     "referralsAll" : {
       "extractionState" : "manual",

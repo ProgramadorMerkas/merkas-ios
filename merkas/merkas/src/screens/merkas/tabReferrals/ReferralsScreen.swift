@@ -26,7 +26,7 @@ struct ReferralsScreen: View {
                 } else if !messageError.isEmpty {
                     ScrollView {
                         VStack {
-                            Label(.referralsError, systemImage: "exclamationmark.circle")
+                            Label(.referralsEmpty, systemImage: "exclamationmark.circle")
                                 .padding(.bottom, 20)
                             
                             Button(action: {

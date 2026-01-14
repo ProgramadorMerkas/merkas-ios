@@ -84,10 +84,10 @@ final class ReferralsService {
                 return .failure("HTTP Error: \(httpResponse.statusCode)")
             }
             
-            /*if let jsonString = String(data: data, encoding: .utf8) {
+            if let jsonString = String(data: data, encoding: .utf8) {
                 print("Respuesta JSON cruda:")
                 print(jsonString)
-            }*/
+            }
             
             // Intentamos decodificar array de usuarios
              

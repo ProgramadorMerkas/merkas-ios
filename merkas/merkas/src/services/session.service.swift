@@ -26,16 +26,16 @@ enum LoginResult {
 struct LoginResponse: Codable {
     let usuarioId: String
     let usuarioCodigo: String
-    let usuarioNombre: String
-    let usuarioApellido: String
-    let usuarioNombreCompleto: String
-    let usuarioCorreo: String
-    let usuarioTelefono: String
-    let usuarioWhatssap: String
-    let usuarioNumeroDocumento: String
-    let usuarioTipoDocumento: String
-    let usuarioGenero: String
-    let usuarioDireccion: String
+    var usuarioNombre: String
+    var usuarioApellido: String
+    var usuarioNombreCompleto: String
+    var usuarioCorreo: String
+    var usuarioTelefono: String
+    var usuarioWhatssap: String
+    var usuarioNumeroDocumento: String
+    var usuarioTipoDocumento: String
+    var usuarioGenero: String
+    var usuarioDireccion: String
     let usuarioRolPrincipal: String
     let usuarioStatus: String
     let usuarioEstado: String
@@ -44,8 +44,8 @@ struct LoginResponse: Codable {
     let usuarioPuntos: String
     let usuarioIdPadre: String?
     let municipioId: String?
-    let usuarioRutaImg: String
-    let imagen: String
+    var usuarioRutaImg: String
+    var imagen: String
     
     // Opcionales
     let usuarioLatitud: String?
@@ -211,7 +211,7 @@ final class RegisterService {
 
 // Helper para Data
 private extension Data {
-    mutating func append(_ string: String) {
+    mutating func append(string: String) {
         if let data = string.data(using: .utf8) {
             append(data)
         }
