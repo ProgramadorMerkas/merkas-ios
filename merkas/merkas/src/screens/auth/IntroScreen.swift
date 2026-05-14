@@ -59,6 +59,6 @@ struct IntroScreen: View {
     }
 }
 
-#Preview {
+/*#Preview {
     IntroScreen()
-}
+}*/

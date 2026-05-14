@@ -95,6 +95,34 @@ struct EcommerceScreen: View {
     }
     private func getToken() async {
         isLoading = true
+         do {
+             let newToken = try await TokenService.obtenerToken(baseURL: baseURL)
+             token = newToken
+             print("Token guardado en AppStorage:", token)
+             await getEcommerceData()
+            
+         } catch let error as TokenError {
+             print("Error obteniendo token:", error.localizedDescription)
+             errorInEcommerce = true
+             switch error {
+             case .NotConnection:
+                 // TODO: Mostrar banner/alerta de sin red
+                 break
+             case .timeout:
+                 // Reintento automático una vez
+                 print("Timeout, reintentando...")
+                 await getToken()
+                 return
+             default:
+                 break
+             }
+         } catch {
+             print("Error inesperado:", error.localizedDescription)
+             errorInEcommerce = true
+         }
+    }
+    /*private func getToken() async {
+        isLoading = true
         do {
             if let newToken = try await TokenService.obtenerToken(baseURL: baseURL) {
                 token = newToken
@@ -110,7 +138,7 @@ struct EcommerceScreen: View {
             isLoading = false
             errorInEcommerce = true
         }
-    }
+    }*/
 }
 
 struct EcommerceInfo: View {

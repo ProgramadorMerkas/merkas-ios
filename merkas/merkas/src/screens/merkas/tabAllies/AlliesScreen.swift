@@ -213,6 +213,35 @@ struct AlliesMap: View {
     private func getToken() async {
         isLoadingAllies = true
         do {
+            let newToken = try await TokenService.obtenerToken(baseURL: baseURL)
+            token = newToken
+            await getAllies()
+        } catch let error as TokenError {
+            print("Error obteniendo token:", error.localizedDescription)
+            isLoadingAllies = false
+            errorInGetAllies = true
+            switch error {
+            case .NotConnection:
+                // TODO: Mostrar banner/alerta de sin red
+                break
+            case .timeout:
+                // Reintento automático una vez
+                print("Timeout, reintentando...")
+                await getToken()
+                return
+            default:
+                break
+            }
+        } catch {
+            print("Error inesperado:", error.localizedDescription)
+            isLoadingAllies = false
+            errorInGetAllies = true
+        }
+    }
+    
+    /*private func getToken() async {
+        isLoadingAllies = true
+        do {
             if let newToken = try await TokenService.obtenerToken(baseURL: baseURL) {
                 token = newToken
                 await getAllies()
@@ -224,7 +253,7 @@ struct AlliesMap: View {
             isLoadingAllies = false
             errorInGetAllies = true
         }
-    }
+    }*/
 }
 
 // MARK: - Publisher para detectar teclado

@@ -42,12 +42,23 @@ struct SignUpScreen: View {
     @State private var errorInSignIn: Bool = false
     @State private var errorInSignUp: Bool = false
     
+    @State private var showRecaptcha: Bool = false
+    @State private var recaptchaResponse: String = ""
+    
     var body: some View {
         let formUserDataInvalid: Bool = nameStatus != .good || surnamesStatus != .good || phoneNumberStatus != .good
         let signUpBtnDisabled: Bool = emailStatus != .good || passwordStatus != .good || formUserDataInvalid || isLoadingSignUp
         let (emailRegex, namesRegex, phoneNumberRegex) = regexes()
         
         VStack {
+            //recatcha
+            RecatchaView{token in
+                recaptchaResponse = token
+                showRecaptcha = true
+                
+            }.frame(width: 0,height: 0)
+            
+            
             ScrollView {
                 Section(.signUpFormUser) {
                     Input(
@@ -173,6 +184,7 @@ struct SignUpScreen: View {
             
             VStack {
                 Button (action: {
+                    //showRecaptcha = true
                     Task {
                         await signUp()
                     }
@@ -196,6 +208,23 @@ struct SignUpScreen: View {
                 .disabled(signUpBtnDisabled)
                 .buttonStyle(.glassProminent)
                 .onPressImpact(.soft)
+                /*.sheet(isPresented: $showRecaptcha){
+                    VStack{
+                        Text("Verifica que no eres un robot").font(.headline).padding()
+                        RecatchaView{token in
+                            recaptchaResponse = token
+                            showRecaptcha = false
+                            Task{
+                                await signUp()
+                            }
+                        }
+                    }.frame(height: 120)
+                    
+                    Button("Cancelar"){
+                        showRecaptcha = false
+                    }.padding()
+                }
+                .presentationDetents([.fraction(0.3)])*/
             }
             .padding(.horizontal, 30)
             .padding(.bottom, 15)
@@ -228,11 +257,57 @@ struct SignUpScreen: View {
             }
         }
     }
-    
     private func signUp() async {
-        Task {
-            isLoadingSignUp = true
+        await signUpInternal(isRetry: false)
+    }
+    
+    private func signUpInternal(isRetry: Bool) async {
+        isLoadingSignUp = true
+        print("� signUpInternal - isRetry: \(isRetry) - token: \(token)")
+        
+        do {
+            let data = RegisterData(
+                nombre: nameText,
+                apellido: surnamesText,
+                telefono: phoneNumberText,
+                correo: emailText,
+                contrasena: passwordText,
+                token: token,
+                recatpchaResponse: recaptchaResponse
+            )
             
+            let result = try await RegisterService.shared.register(data: data, title: "registrar_usuario")
+            
+            switch result {
+            case .success(let success):
+                print("✅ Registro exitoso:", success.validacion)
+                await loginAfterRegister(isRetry: false)
+                
+            case .failure(let mensaje):
+                print("❌ Error registro:", mensaje, "- token:", token)
+                
+                // ✅ Ahora SÍ maneja token incorrecto en el registro
+                if !isRetry && (mensaje.contains("token_incorrecto") || mensaje.contains("token_vencido")) {
+                    print("� Token incorrecto en registro, refrescando...")
+                    let refreshed = await refreshToken()
+                    if refreshed {
+                        await signUpInternal(isRetry: true)
+                        return
+                    }
+                }
+                errorInSignUp = true
+            }
+        } catch {
+            print("� Error registro:", error)
+            errorInSignUp = true
+        }
+        
+        isLoadingSignUp = false
+    }
+    
+    /*private func signUpInternal(isRetry: Bool) async {
+            isLoadingSignUp = true
+            print(" signUpInternal - isRetry: \(isRetry) - token: \(token)")
             do {
                 let data = RegisterData(
                     nombre: nameText,
@@ -262,13 +337,18 @@ struct SignUpScreen: View {
                     case .failure(let mensaje):
                         print("Error del servidor:", mensaje)
                         if mensaje.contains("token_incorrecto") || mensaje.contains("token_vencido") {
-                            await getToken()
+                           let refresh =  await refreshToken()
+                            if refresh {
+                                await signUpInternal(isRetry:true)
+                                return
+                            }
                         } else {
                             errorInSignIn = true
                         }
                     }
                 case .failure(let mensaje):
                     print("Error registro:", mensaje)
+                    print("token" , token)
                     errorInSignUp = true
                 }
                 isLoadingSignUp = false
@@ -276,9 +356,75 @@ struct SignUpScreen: View {
                 print("Error registro:", error)
                 isLoadingSignUp = false
             }
+        
+    }*/
+    
+    private func loginAfterRegister(isRetry: Bool) async {
+        print("� loginAfterRegister - isRetry: \(isRetry) - token: \(token)")
+        do {
+            let loginData = LoginData(correo: emailText, contrasena: passwordText, token: token)
+            let result = try await LoginService.shared.login(data: loginData)
+            
+            switch result {
+            case .success(let user):
+                print("✅ Login exitoso:", user.usuarioNombreCompleto)
+                correo = emailText
+                contrasena = passwordText
+                appState.user = user
+                appState.isLoggedIn = true
+                loggedIn = true
+                
+            case .failure(let mensaje):
+                print("❌ Error login post-registro:", mensaje)
+                if !isRetry && (mensaje.contains("token_incorrecto") || mensaje.contains("token_vencido")) {
+                    print("� Token incorrecto en login, refrescando...")
+                    let refreshed = await refreshToken()
+                    if refreshed {
+                        await loginAfterRegister(isRetry: true)
+                        return
+                    }
+                }
+                errorInSignIn = true
+            }
+        } catch {
+            print("� Error login:", error)
+            errorInSignIn = true
         }
+        
+        isLoadingSignUp = false
     }
-    private func getToken() async {
+    
+    @discardableResult
+    private func refreshToken() async -> Bool{
+        isLoadingSignUp = true
+        do{
+            let newToken = try await TokenService.obtenerToken(baseURL: baseURL)
+            token = newToken
+            print("Token guardado en AppStorage:", token)
+            return true
+            //await signUp()
+        } catch let error as TokenError {
+            print("Error obteniendo token:", error.localizedDescription)
+           
+            switch error {
+            case .NotConnection:
+                // TODO: Mostrar banner/alerta de sin red
+                break
+            case .timeout:
+                // Reintento automático una vez
+                print("Timeout, reintentando...")
+                //await getToken()
+                //return
+            default:
+                break
+            }
+        } catch {
+            print("Error inesperado:", error.localizedDescription)
+        }
+        isLoadingSignUp = false
+        return false
+    }
+    /*private func getToken() async {
         isLoadingSignUp = true
         do {
             if let newToken = try await TokenService.obtenerToken(baseURL: baseURL) {
@@ -295,7 +441,7 @@ struct SignUpScreen: View {
             isLoadingSignUp = false
             errorInSignIn = true
         }
-    }
+    }*/
 }
 
 enum FormFieldType {
@@ -348,6 +494,6 @@ func validateFieldForm(
 }
 
 
-#Preview {
+/*#Preview {
     SignUpScreen()
-}
+}*/
