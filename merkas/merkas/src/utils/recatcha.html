@@ -1,0 +1,30 @@
+<!-- recaptcha.html - Agrégalo al bundle de Xcode -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="g-recaptcha"
+         data-sitekey="TU_SITE_KEY_AQUI"
+         data-callback="onSuccess">
+    </div>
+    <script>
+        function onSuccess(token) {
+            // Envía el token a Swift
+            window.webkit.messageHandlers.recaptchaToken.postMessage(token);
+        }
+    </script>
+</body>
+</html>

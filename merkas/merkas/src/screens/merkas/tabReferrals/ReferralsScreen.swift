@@ -150,7 +150,35 @@ struct ReferralsScreen: View {
             }
         }
     }
+    
     private func getToken() async {
+        loadingData = true
+        do {
+             let newToken = try await TokenService.obtenerToken(baseURL: baseURL)
+            token = newToken
+            print("Token guardado en AppStorage:", token)
+            await getReferrals()
+        } catch let error as TokenError {
+            print("Error obteniendo token:", error.localizedDescription)
+            loadingData = false
+            switch error {
+            case .NotConnection:
+                // TODO: Mostrar banner/alerta de sin red
+                break
+            case .timeout:
+                // Reintento automático una vez
+                print("Timeout, reintentando...")
+                await getToken()
+                return
+            default:
+                break
+            }
+        } catch {
+            loadingData = false
+            print("Error inesperado:", error.localizedDescription)
+        }
+    }
+    /*private func getToken() async {
         loadingData = true
         do {
             if let newToken = try await TokenService.obtenerToken(baseURL: baseURL) {
@@ -165,7 +193,7 @@ struct ReferralsScreen: View {
             print("Error obteniendo token:", error)
             loadingData = false
         }
-    }
+    }*/
 }
 
 enum ReferralsTabsEnum: Hashable, CaseIterable {

@@ -24,6 +24,6 @@ struct VersionApp: View {
     }
 }
 
-#Preview {
+/*#Preview {
     VersionApp()
-}
+}*/

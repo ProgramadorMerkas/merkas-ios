@@ -31,6 +31,6 @@ struct Router: View {
     }
 }
 
-#Preview {
+/*#Preview {
     Router()
-}
+}*/

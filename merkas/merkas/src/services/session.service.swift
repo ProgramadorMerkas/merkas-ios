@@ -136,6 +136,7 @@ struct RegisterData {
     let correo: String
     let contrasena: String
     let token: String
+    let recatpchaResponse: String
 }
 
 struct RegisterSuccessResponse: Codable {
@@ -175,27 +176,32 @@ final class RegisterService {
             body.append("\(value)\r\n")
         }
         
-        appendField(name: "tipo", value: "normal")
+        //appendField(name: "tipo", value: "normal")
         appendField(name: "usuario_id", value: "")
-        appendField(name: "fileimagen", value: "")
-        appendField(name: "usuario_social", value: "")
-        appendField(name: "usuario_social_imagen", value: "")
-        appendField(name: "nombre", value: data.nombre)
-        appendField(name: "apellido", value: data.apellido)
+        appendField(name: "usuario_nombre", value: data.nombre)
+        appendField(name: "usuario_apellido", value: data.apellido)
         appendField(name: "usuario_telefono", value: data.telefono)
         appendField(name: "usuario_correo", value: data.correo)
-        appendField(name: "contrasena", value: data.contrasena)
+        appendField(name: "usuario_contrasena", value: data.contrasena)
         appendField(name: "token", value: data.token)
         appendField(name: "usuario_numero_documento", value: "")
+        appendField(name: "recaptcha_token", value: data.recatpchaResponse)
         
         body.append("--\(boundary)--\r\n")
         request.httpBody = body
         
         let (responseData, response) = try await URLSession.shared.data(for: request)
         
+        let rawResponse = String(data: responseData , encoding: .utf8) ?? "No se puede leer"
+        print("RegisterService raw:" , rawResponse)
+        
         if let httpResponse = response as? HTTPURLResponse,
            !(200..<300).contains(httpResponse.statusCode) {
             throw NSError(domain: "HTTPError", code: httpResponse.statusCode)
+        }
+        let trimmed = rawResponse.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let cleanData = trimmed.data(using: .utf8) else {
+            throw URLError(.cannotParseResponse)
         }
         
         // Intentar decodificar primero como error
